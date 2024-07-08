@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 17:36:55 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 18:45:40 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,19 @@ typedef struct s_fdf
 	int		***map;
 }	t_fdf;
 
+
 // parse
 int		get_width(char *map);
 int		get_height(char *map);
-void	exit_handler(char *s);
-int		***create_matrix(int fd);
-int		***fill_tab(int fd);
+int		***create_matrix(char *map);
+int		***fill_tab(char *map, int fd);
 
 // free
 void	free_tab_int(int ***tab, int i);
 void	free_tab_char(char **tab);
 
 // utils
+void	exit_handler(char *s);
 int	open_map(char *map);
 
 #endif

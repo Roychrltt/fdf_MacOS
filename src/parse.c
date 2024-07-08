@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 17:54:40 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 18:59:03 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,45 +54,15 @@ int	get_height(char *map)
 	return (height);
 }
 
-void	check_map(char *map)
-{
-	int		num;
-	int		cur;
-	int		fd;
-	char	*line;
-
-	fd = open_map(map);
-	line = get_next_line(fd);
-	if (!line)
-		exit_handler("Empty map!\n");
-	num = get_width(line, ' ');
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		cur = get_width(line, ' ');
-		if (cur != num)
-		{
-			free(line);
-			exit_handler("Invalid map!\n");
-		}
-	}
-	close(fd);
-}
-
-int	***create_matrix(int fd)
+int	***create_matrix(char *map)
 {
 	int		height;
 	int		width;
-	char	*line;
 	int		***tab;
 	int		i;
 
-	line = get_next_line(fd);
-	width = get_width(line, ' ');
-	height = get_height(fd, line);
+	height = get_height(map);
+	width = get_width(map);
 	tab = malloc(height * sizeof (int **));
 	if (!tab)
 		exit_handler("Malloc failure.\n");
@@ -110,7 +80,20 @@ int	***create_matrix(int fd)
 	return (tab);
 }
 
-int	***fill_tab(int fd)
+static unsigned int	get_color(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && s[i] != ',')
+		i++;
+	if (!s[i])
+		return (0xFFFFFF);
+	else
+		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
+}
+
+int	***fill_tab(char *map, int fd)
 {
 	int		***tab;
 	int		i;
@@ -118,7 +101,7 @@ int	***fill_tab(int fd)
 	char	*line;
 	char	**nums;
 
-	tab = create_matrix(fd);
+	tab = create_matrix(map);
 	i = 0;
 	while (tab[i])
 	{
@@ -128,6 +111,7 @@ int	***fill_tab(int fd)
 		while (tab[i][j])
 		{
 			tab[i][j][0] = ft_atoi(nums[j]);
+			tab[i][j][1] = get_color(nums[j]);
 			j++;
 		}
 		free(line);

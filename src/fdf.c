@@ -6,17 +6,11 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 17:55:48 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 18:46:00 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	exit_handler(char *s)
-{
-	ft_putstr_fd(s, STDERR_FILENO);
-	exit(EXIT_FAILURE);
-}
 
 static void	check_map(char *map)
 {
