@@ -2,7 +2,7 @@ NAME = fdf
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 
 INC = -Isrc/ -Ilibft -Iminilib 
 

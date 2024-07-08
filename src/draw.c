@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 19:21:34 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 22:37:21 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,3 +34,61 @@ void	draw_instructions(t_vars var)
 	mlx_string_put(mlx, win, 15, y += 30, WHITE, "Reset: R");
 }
 
+void	put_pixel(t_img *img, int x, int y, int color)
+{
+	char	*pxl;
+
+	if (x >= 0 && x <= WIDTH && y >= 0 && y <= HEIGHT)
+	{
+		pxl = img->addr + (y * img->line_len + x * (img->bpp / 8));
+		*(unsigned int *)pxl = color;
+	}
+}
+
+/*void	draw_line(t_map *map, t_point point0, t_point point1)
+{
+	float	step;
+	float	x;
+	float	y;
+	int		i;
+	t_delta	delta;
+
+	i = 0;
+	delta.dx = point1.x - point0.x;
+	delta.dy = point1.y - point0.y;
+	if (abs(delta.dx) >= abs(delta.dy))
+		step = fabsf(delta.dx);
+	else
+		step = fabsf(delta.dy);
+	delta.dx = delta.dx / step;
+	delta.dy = delta.dy / step;
+	x = point0.x;
+	y = point0.y;
+	while (i < step)
+	{
+		put_pixel(env, -x + WINDOW_WIDTH / 2 + env->translation, \
+		-y + HEIGHT / 2 + env->translation, 0xFFFFFF);
+		x = x + delta.dx;
+		y = y + delta.dy;
+		i++;
+	}
+}
+*/
+void	draw_background(t_img *img)
+{
+	int	height;
+	int	width;
+
+	height = 0;
+	width = 0;
+	while (height < HEIGHT)
+	{
+		width = 0;
+		while (width < WIDTH)
+		{
+			put_pixel(img, width, height, 0x1b1b1b);
+			width++;
+		}
+		height++;
+	}
+}
