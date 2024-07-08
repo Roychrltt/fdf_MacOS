@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 14:00:53 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 17:30:50 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,6 @@ void	exit_handler(char *s)
 	exit(EXIT_FAILURE);
 }
 
-static int	open_map(char *map)
-{
-	int	fd;
-
-	fd = open(map, O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Map open failure");
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
-}
 static void	check_map(int fd)
 {
 	int		num;

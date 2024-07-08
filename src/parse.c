@@ -6,42 +6,51 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 11:19:46 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 17:36:38 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	get_width(char *s, char c)
+int	get_width(char *map)
 {
 	size_t	i;
-	int		count;
+	int		width;
+	char	*s;
+	int		fd;
 
 	i = 0;
-	count = 0;
+	fd = open_map(map);
+	s = get_next_line(fd);
+	width = 0;
 	while (s[i])
 	{
-		if (s[i] != c && (s[i + 1] == c || !s[i + 1]))
-			count++;
+		if (s[i] != ' ' && (s[i + 1] == ' ' || !s[i + 1]))
+			width++;
 		i++;
 	}
-	return (count);
+	close(fd);
+	return (width);
 }
 
-int	get_height(int fd, char *line)
+int	get_height(char *map)
 {
-	int	row;
+	int		height;
+	int		fd;
+	char	*line;
 
-	row = 1;
+	fd = open_map(map);
+	line = get_next_line(fd);
+	height = 1;
 	while (line)
 	{
 		free(line);
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		row++;
+		height++;
 	}
-	return (row);
+	return (height);
 }
 
 void	check_map(int fd)
