@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 17:30:50 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 17:55:48 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ void	exit_handler(char *s)
 	exit(EXIT_FAILURE);
 }
 
-static void	check_map(int fd)
+static void	check_map(char *map)
 {
 	int		num;
 	int		cur;
+	int		fd;
 	char	*line;
 
+	fd = open_map(map);
 	line = get_next_line(fd);
 	if (!line)
 		exit_handler("Empty map!\n");
@@ -41,6 +43,7 @@ static void	check_map(int fd)
 			exit_handler("Invalid map!\n");
 		}
 	}
+	close(fd);
 }
 
 typedef struct s_vars

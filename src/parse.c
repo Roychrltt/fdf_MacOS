@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 17:36:38 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 17:54:40 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,18 @@ int	get_height(char *map)
 			break ;
 		height++;
 	}
+	close(fd);
 	return (height);
 }
 
-void	check_map(int fd)
+void	check_map(char *map)
 {
 	int		num;
 	int		cur;
+	int		fd;
 	char	*line;
 
+	fd = open_map(map);
 	line = get_next_line(fd);
 	if (!line)
 		exit_handler("Empty map!\n");
@@ -76,6 +79,7 @@ void	check_map(int fd)
 			exit_handler("Invalid map!\n");
 		}
 	}
+	close(fd);
 }
 
 int	***create_matrix(int fd)
