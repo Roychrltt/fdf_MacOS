@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 18:45:40 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 19:14:10 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ typedef struct s_map
 	int	height;
 	int	width;
 	int	***tab;
-	int	z_min;
-	int	z_max;
 }				t_map;
 
 typedef struct s_img
@@ -53,18 +51,11 @@ typedef struct s_img
 	int		endian;
 }	t_img;
 
-typedef struct s_fdf
+typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
-	t_img	*img;
-	t_point	*point;
-	int		max;
-	int		min;
-	int		zoom;
-	int		***map;
-}	t_fdf;
-
+}	t_vars;
 
 // parse
 int		get_width(char *map);
@@ -72,12 +63,15 @@ int		get_height(char *map);
 int		***create_matrix(char *map);
 int		***fill_tab(char *map, int fd);
 
+// draw
+void	draw_instructions(t_vars var);
+
 // free
 void	free_tab_int(int ***tab, int i);
 void	free_tab_char(char **tab);
 
 // utils
 void	exit_handler(char *s);
-int	open_map(char *map);
+int		open_map(char *map);
 
 #endif

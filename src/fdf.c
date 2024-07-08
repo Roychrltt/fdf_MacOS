@@ -6,11 +6,27 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 18:46:00 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 20:14:18 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+static int	count_word(char const *s, char c)
+{
+	size_t	i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] != c && s[i] != '\n' && (s[i + 1] == c || !s[i + 1]))
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 static void	check_map(char *map)
 {
@@ -19,18 +35,19 @@ static void	check_map(char *map)
 	int		fd;
 	char	*line;
 
+	num = get_width(map);
 	fd = open_map(map);
 	line = get_next_line(fd);
 	if (!line)
 		exit_handler("Empty map!\n");
-	num = get_width(line, ' ');
 	while (line)
 	{
 		free(line);
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		cur = get_width(line, ' ');
+		cur = count_word(line, ' ');
+		printf("cur: %d\n", cur);
 		if (cur != num)
 		{
 			free(line);
@@ -39,12 +56,6 @@ static void	check_map(char *map)
 	}
 	close(fd);
 }
-
-typedef struct s_vars
-{
-	void	*mlx;
-	void	*win;
-}	t_vars;
 
 int key_press(int keycode, t_vars *vars)
 {
@@ -104,37 +115,14 @@ void draw_line(void *mlx, void *win, t_point p1, t_point p2)
     }
 }
 */
-static void	draw_menu(t_vars var)
-{
-	int		y;
-	void	*mlx;
-	void	*win;
-
-	mlx = var.mlx;
-	win = var.win;
-	y = 0;
-	mlx_string_put(mlx, win, 15, y += 15, WHITE, "Controls:");
-	mlx_string_put(mlx, win, 15, y += 40, WHITE, "Reset: R");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Move: W, A, S, D");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Zoom: Arrows");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Flatten: + / -");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Rotate:");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  x (+ / -): U / J");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  y (+ / -): I / K");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  z (+ / -): O / L");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Toggle Perspective: P");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "(Isometric and Parallel)");
-}
 
 int	main(int argc, char **argv)
 {
-	int	fd;
 	//t_data	*data;
 
 	if (argc != 2)
 		exit_handler("Usage: $>./fdf /maps/map.fdf\n");
-	fd = open_map(argv[1]);
-	check_map(fd);
+	check_map(argv[1]);
 
 	t_vars vars;
 
@@ -154,9 +142,8 @@ int	main(int argc, char **argv)
 			data[a]->z = tab[i][j][0];
 		}
 	}*/
-	draw_menu(vars);
+	draw_instructions(vars);
 	mlx_hook(vars.win, 2, 1L<<0, key_press, &vars);
 	//mlx_hook(vars.win, 4, 1L<<2, , close_window, &vars);
 	mlx_loop(vars.mlx);
-	close(fd);
 }

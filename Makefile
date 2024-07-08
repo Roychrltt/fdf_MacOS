@@ -12,7 +12,7 @@ MINILIB = minilib/libmlx.a #minilib/libmlx.dylib
 
 SRC_DIR = ./src/
 
-SRC_FILES = fdf.c parse.c free.c 
+SRC_FILES = fdf.c parse.c free.c draw.c utils.c #projection.c
 			
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 

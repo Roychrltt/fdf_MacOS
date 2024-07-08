@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 18:59:03 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 20:13:41 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,18 @@ int	get_width(char *map)
 	fd = open_map(map);
 	s = get_next_line(fd);
 	width = 0;
+	if (!s)
+		return (width);
 	while (s[i])
 	{
-		if (s[i] != ' ' && (s[i + 1] == ' ' || !s[i + 1]))
+		if (s[i] != ' '  && s[i] != '\n' && (s[i + 1] == ' ' || !s[i + 1]))
 			width++;
 		i++;
+	}
+	while (s)
+	{
+		free(s);
+		s = get_next_line(fd);
 	}
 	close(fd);
 	return (width);
@@ -69,7 +76,7 @@ int	***create_matrix(char *map)
 	i = 0;
 	while (i < height)
 	{
-		tab[i] = malloc(width * sizeof (int[2]));
+		tab[i] = malloc(width * sizeof (int [2]));
 		if (!tab[i])
 		{
 			free_tab_int(tab, i);
