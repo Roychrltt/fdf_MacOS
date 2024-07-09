@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 13:08:04 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 14:21:49 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int key_press(int keycode, t_vars *vars)
 {
 	if (keycode == 53)
 		mlx_destroy_window(vars->mlx, vars->win);
+		exit(0);
 	//	else if (keycode == )
 
 	return(0);
@@ -79,7 +80,7 @@ void	isometric(t_vars vars, int *x, int *y, int z)
 	*y = -z + (prev_x + prev_y) * sin(0.523599);
 }
 
-void	map_to_points(t_vars vars, t_point *points, int ***tab)
+void	map_to_points(t_vars vars, t_point *points, t_map map)
 {
 	int		i;
 	int		j;
@@ -87,15 +88,15 @@ void	map_to_points(t_vars vars, t_point *points, int ***tab)
 
 	i = 0;
 	index = 0;
-	while (i < HEIGHT)
+	while (i < map.height)
 	{
 		j = 0;
-		while (j < WIDTH)
+		while (j < map.width)
 		{
 			points[index].x = j;
 			points[index].y = i;
-			points[index].z = tab[i][j][0];
-			points[index].color = tab[i][j][1];
+			points[index].z = map.tab[i][j][0];
+			points[index].color = map.tab[i][j][1];
 			j++;
 			index++;
 		}
@@ -103,10 +104,10 @@ void	map_to_points(t_vars vars, t_point *points, int ***tab)
 	}
 	i = 0;
 	index = 0;
-	while (i < HEIGHT)
+	while (i < map.height)
 	{
 		j = 0;
-		while (j < WIDTH)
+		while (j < map.width)
 		{
 			isometric(vars, &points[index].x, &points[index].y, points[index].z);
 			j++;
@@ -121,38 +122,26 @@ int	main(int argc, char **argv)
 	t_vars	vars;
 	t_point	*points;
 	t_img	img;
+	t_map	map;
 	int		fd;
-	int		***tab;
 
 	if (argc != 2)
 		exit_handler("Usage: $>./fdf /maps/map.fdf\n");
 	check_map(argv[1]);
+	map.height = get_height(argv[1]);
+	map.width = get_width(argv[1]);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "FdF");
-	points = malloc(WIDTH * HEIGHT * sizeof (t_point));
+	points = malloc(map.height * map.width * sizeof (t_point));
 	if (!points)
 		exit_handler("Malloc failure.\n");
 	fd = open_map(argv[1]);
-	tab = fill_tab(argv[1], fd);
+	map.tab = fill_tab(argv[1], fd);
 	close(fd);
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			printf("%d %d\n", tab[i][j][0], tab[i][j][1]);
-		}
-		printf("Line finished\n");
-	}
-	//error free by far, 3d tab created with position and color
-	printf("so far ok.\n");
-	map_to_points(vars, points, tab);
-	printf("map to points ok.\n");
+	map_to_points(vars, points, map);
 	img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-	draw_background(&img);
-	int i = -1;
-	while (++i < WIDTH * HEIGHT)
-		put_pixel(&img, points[i]);
+	draw_image(&img, map, points);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	draw_instructions(vars);
 	mlx_hook(vars.win, 2, 1L<<0, key_press, &vars);

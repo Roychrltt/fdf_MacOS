@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 10:59:21 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 14:21:06 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,14 @@ int		***create_matrix(char *map);
 int		***fill_tab(char *map, int fd);
 
 // draw
+void	put_pixel(t_img *img, t_point point);
+void	draw_line(t_map *map, t_point point0, t_point point1);
 void	draw_instructions(t_vars var);
 void	draw_background(t_img *img);
+void	draw_image(t_img *img, t_map map, t_point *points);
 
 // free
 void	free_tab_int(int ***tab, int i);
-void	put_pixel(t_img *img, t_point point);
-void	draw_line(t_map *map, t_point point0, t_point point1);
 void	free_tab_char(char **tab);
 
 // utils

@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 11:03:51 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 14:20:54 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	put_pixel(t_img *img, t_point point)
 		*(unsigned int *)pxl = color;
 	}
 }
-
-/*void	draw_line(t_map *map, t_point point0, t_point point1)
+/*
+void	draw_line(t_map *map, t_point point0, t_point point1)
 {
 	float	step;
 	float	x;
@@ -73,7 +73,7 @@ void	put_pixel(t_img *img, t_point point)
 	while (i < step)
 	{
 		put_pixel(env, -x + WINDOW_WIDTH / 2 + env->translation, \
-		-y + HEIGHT / 2 + env->translation, 0xFFFFFF);
+				-y + HEIGHT / 2 + env->translation, 0xFFFFFF);
 		x = x + delta.dx;
 		y = y + delta.dy;
 		i++;
@@ -101,4 +101,14 @@ void	draw_background(t_img *img)
 		}
 		height++;
 	}
+}
+
+void	draw_image(t_img *img, t_map map, t_point *points)
+{
+	int	i;
+
+	i = 0;
+	draw_background(img);
+	while (i < map.width * map.height)
+		put_pixel(img, points[i++]);
 }
