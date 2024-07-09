@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 23:03:24 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 10:41:23 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,56 +64,6 @@ int key_press(int keycode, t_vars *vars)
 
 	return(0);
 }
-/*
-   int button_press(int button, int x, int y, void *param)
-   {
-   (void)x;
-   (void)y;
-   (void)param;
-   if (button == 1)
-   mlx_destroy_window(vars->mlx, vars->win);
-   else if (keycode == )
-
-   return(0);
-   }
-   */
-/*
-   typedef struct s_point {
-   int x;
-   int y;
-   int z;
-   }               t_point;
-
-   t_point project_point(int x, int y, int z)
-   {
-   t_point point;
-
-// Simple isometric projection
-point.x = (x - y) * 10 + WIN_WIDTH / 2;
-point.y = (x + y - z) * 5 + WIN_HEIGHT / 2;
-return point;
-}
-
-void draw_line(void *mlx, void *win, t_point p1, t_point p2)
-{
-int dx = abs(p2.x - p1.x);
-int dy = abs(p2.y - p1.y);
-int sx = p1.x < p2.x ? 1 : -1;
-int sy = p1.y < p2.y ? 1 : -1;
-int err = (dx > dy ? dx : -dy) / 2;
-int e2;
-
-while (1)
-{
-mlx_pixel_put(mlx, win, p1.x, p1.y, 0xFFFFFF);
-if (p1.x == p2.x && p1.y == p2.y)
-break;
-e2 = err;
-if (e2 > -dx) { err -= dy; p1.x += sx; }
-if (e2 < dy) { err += dx; p1.y += sy; }
-}
-}
-*/
 
 void	isometric(t_vars *var, int *x, int *y, int z)
 {
@@ -130,26 +80,29 @@ void	isometric(t_vars *var, int *x, int *y, int z)
 
 int	main(int argc, char **argv)
 {
+	t_vars	vars;
 	t_point	*points;
+	t_img	img;
+	int		i;
+	int		j;
+	int		a;
+	int		fd;
+	int		***tab;
 
 	if (argc != 2)
 		exit_handler("Usage: $>./fdf /maps/map.fdf\n");
 	check_map(argv[1]);
-
-	t_vars	vars;
-	t_img	img;
-
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "FdF");
-
 	points = malloc(WIDTH * HEIGHT * sizeof (t_point));
-	int i = 0;
-	int a = 0;
-	int j;
-	int fd = open_map(argv[1]);
-	int ***tab = fill_tab(argv[i], fd);
+	if (!points)
+		exit_handler("Malloc failure.\n");
+	i = 0;
+	a = 0;
+	fd = open_map(argv[1]);
+	tab = fill_tab(argv[i], fd);
 	close(fd);
-
+	//error free by far, 3d tab created with position and color
 	while (i < HEIGHT)
 	{
 		j = 0;
@@ -163,7 +116,6 @@ int	main(int argc, char **argv)
 		}
 		i++;
 	}
-
 	i = 0;
 	a = 0;
 	while (i < HEIGHT)

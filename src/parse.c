@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 20:13:41 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 10:33:53 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static unsigned int	get_color(char *s)
 	while (s[i] && s[i] != ',')
 		i++;
 	if (!s[i])
-		return (0xFFFFFF);
+		return (0xF3F3F3);
 	else
 		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
 }
