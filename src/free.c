@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:54:56 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:56:20 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 23:06:43 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_tab_int2(int ***tab, int i, int j, int w)
 	while (a < i)
 	{
 		b = 0;
-		while (b < j)
+		while (b < w)
 			free(tab[a][b++]);
 		free(tab[a++]);
 	}

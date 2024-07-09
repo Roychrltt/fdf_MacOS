@@ -6,20 +6,20 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 21:49:11 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 23:32:11 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	draw_instructions(t_vars var)
+void	draw_instructions(t_vars *vars)
 {
 	int		y;
 	void	*mlx;
 	void	*win;
 
-	mlx = var.mlx;
-	win = var.win;
+	mlx = vars->mlx;
+	win = vars->win;
 	y = 0;
 	mlx_string_put(mlx, win, 15, y += 15, WHITE, "Controls:");
 	mlx_string_put(mlx, win, 15, y += 40, WHITE, "Move: W, A, S, D, Arrows");
@@ -104,12 +104,14 @@ void	draw_background(t_img *img)
 	}
 }
 
-void	draw_image(t_img *img, t_map map, t_point *points)
+void	draw_image(t_vars *vars, t_map map, t_point *points)
 {
 	int	i;
 
 	i = 0;
-	draw_background(img);
+	draw_background(vars->img);
 	while (i < map.width * map.height)
-		put_pixel(img, points[i++]);
+		put_pixel(vars->img, points[i++]);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
+	draw_instructions(vars);
 }

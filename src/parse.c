@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:59:24 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 23:06:23 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	create_matrix(t_map *map)
 		while (j < map->width)
 		{
 			map->tab[i][j] = malloc(2 * sizeof (int ));
-			if (!tab[i][j])
-				free_tab_int2(tab, i, j, map->width);
+			if (!map->tab[i][j])
+				free_tab_int2(map->tab, i, j, map->width);
 			j++;
 		}
 		i++;

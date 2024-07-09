@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:21:57 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 23:32:47 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,10 @@ int	main(int argc, char **argv)
 	if (!points)
 		exit_handler("Malloc failure.\n");
 	map_to_points(vars, points, map);
-	draw_image(vars.img, map, points);
-	mlx_put_image_to_window(vars.mlx, vars.win, vars.img->img, 0, 0);
-	draw_instructions(vars);
+	draw_image(&vars, map, points);
 	mlx_hook(vars.win, 2, 1L<<0, key_press, &vars);
 	//mlx_hook(vars.win, 4, 1L<<2, , close_window, &vars);
 	mlx_loop(vars.mlx);
 	free(points);
+	free_map_tab(map.tab, map.height, map.width);
 }

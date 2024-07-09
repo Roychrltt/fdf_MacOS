@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:53:41 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 23:31:59 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ void	check_init_map(t_map *map);
 // draw
 void	put_pixel(t_img *img, t_point point);
 void	draw_line(t_map *map, t_point point0, t_point point1);
-void	draw_instructions(t_vars var);
+void	draw_instructions(t_vars *vars);
 void	draw_background(t_img *img);
-void	draw_image(t_img *img, t_map map, t_point *points);
+void	draw_image(t_vars *vars, t_map map, t_point *points);
 
 // free
 void	free_tab_int(int ***tab, int i);
