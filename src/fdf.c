@@ -6,19 +6,17 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:18:09 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 22:21:57 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int key_press(int keycode, t_vars *vars)
+int	key_press(int keycode, t_vars *vars)
 {
 	if (keycode == 53)
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
-	//	else if (keycode == )
-
 	return(0);
 }
 

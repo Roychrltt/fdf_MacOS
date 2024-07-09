@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 21:13:21 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 22:59:24 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	get_map_size(t_map *map)
 	close(fd);
 }
 
-int	***create_matrix(t_map *map)
+void	create_matrix(t_map *map)
 {
 	int		i;
 	int		j;
@@ -54,23 +54,17 @@ int	***create_matrix(t_map *map)
 	{
 		map->tab[i] = malloc(map->width * sizeof (int *));
 		if (!map->tab[i])
-		{
 			free_tab_int(map->tab, i);
-			exit_handler("Malloc failure.\n");
-		}
 		j = 0;
 		while (j < map->width)
 		{
 			map->tab[i][j] = malloc(2 * sizeof (int ));
-           // if (!tab[i][j]) {
-           //    free_tab_int(tab, i); // You'll need a function to free partially allocated tab[i][j]
-           //     exit_handler("Malloc failure.\n");
-           //}
-            j++;
-        }
+			if (!tab[i][j])
+				free_tab_int2(tab, i, j, map->width);
+			j++;
+		}
 		i++;
 	}
-	return (map->tab);
 }
 
 static unsigned int	get_color(char *s)
@@ -93,7 +87,7 @@ int	***fill_tab(t_map *map)
 	char	*line;
 	char	**nums;
 
-	map->tab = create_matrix(map);
+	create_matrix(map);
 	i = 0;
 	while (i < map->height)
 	{

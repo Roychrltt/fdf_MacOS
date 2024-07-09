@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:54:56 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 22:13:53 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 22:56:20 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,28 @@ void	free_tab_int(int ***tab, int num)
 		i++;
 	}
 	free(tab);
+	exit_handler("Malloc failure.\n");
+}
+
+void	free_tab_int2(int ***tab, int i, int j, int w)
+{
+	int	a;
+	int	b;
+
+	a = 0;
+	while (a < j)
+		free(tab[i][a++]);
+	free(tab[i]);
+	a = 0;
+	while (a < i)
+	{
+		b = 0;
+		while (b < j)
+			free(tab[a][b++]);
+		free(tab[a++]);
+	}
+	free(tab);
+	exit_handler("Malloc failure.\n");
 }
 
 void	free_map_tab(int ***tab, int h, int w)
