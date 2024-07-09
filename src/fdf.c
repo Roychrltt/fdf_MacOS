@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 14:21:49 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 21:07:51 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,6 @@ static int	count_word(char const *s, char c)
 		i++;
 	}
 	return (count);
-}
-
-static void	check_map(char *map)
-{
-	int		num;
-	int		cur;
-	int		fd;
-	char	*line;
-
-	num = get_width(map);
-	fd = open_map(map);
-	line = get_next_line(fd);
-	if (!line)
-		exit_handler("Empty map!\n");
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		cur = count_word(line, ' ');
-		if (cur != num)
-		{
-			free(line);
-			exit_handler("Invalid map!\n");
-		}
-	}
-	close(fd);
 }
 
 int key_press(int keycode, t_vars *vars)
@@ -117,27 +89,51 @@ void	map_to_points(t_vars vars, t_point *points, t_map map)
 	}
 }
 
+static void	check_init_map(t_map *map)
+{
+	int		cur;
+	char	*line;
+
+	get_map_size(map);
+	map->fd = open_map(map->path);
+	line = get_next_line(map->fd);
+	if (!line)
+		exit_handler("Empty map!\n");
+	while (line)
+	{
+		free(line);
+		line = get_next_line(map->fd);
+		if (!line)
+			break ;
+		cur = count_word(line, ' ');
+		if (cur != map->width)
+		{
+			free(line);
+			exit_handler("Invalid map!\n");
+		}
+	}
+	close(map->fd);
+	map->fd = open_map(map->path);
+	map->tab = fill_tab(map);
+	close(map->fd);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_point	*points;
 	t_img	img;
 	t_map	map;
-	int		fd;
 
 	if (argc != 2)
 		exit_handler("Usage: $>./fdf /maps/map.fdf\n");
-	check_map(argv[1]);
-	map.height = get_height(argv[1]);
-	map.width = get_width(argv[1]);
+	map.path = argv[1];
+	check_init_map(&map);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "FdF");
 	points = malloc(map.height * map.width * sizeof (t_point));
 	if (!points)
 		exit_handler("Malloc failure.\n");
-	fd = open_map(argv[1]);
-	map.tab = fill_tab(argv[1], fd);
-	close(fd);
 	map_to_points(vars, points, map);
 	img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);

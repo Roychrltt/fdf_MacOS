@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 14:21:06 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 21:07:25 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ typedef struct s_point
 
 typedef struct s_map
 {
-	int	height;
-	int	width;
-	int	***tab;
+	char	*path;
+	int		fd;
+	int		height;
+	int		width;
+	int		***tab;
 }				t_map;
 
 typedef struct s_img
@@ -59,10 +61,9 @@ typedef struct s_vars
 }	t_vars;
 
 // parse
-int		get_width(char *map);
-int		get_height(char *map);
-int		***create_matrix(char *map);
-int		***fill_tab(char *map, int fd);
+void	get_map_size(t_map *map);
+int		***create_matrix(t_map *map);
+int		***fill_tab(t_map *map);
 
 // draw
 void	put_pixel(t_img *img, t_point point);

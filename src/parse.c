@@ -6,88 +6,62 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 13:03:54 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 21:08:43 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	get_width(char *map)
+void	get_map_size(t_map *map)
 {
 	size_t	i;
-	int		width;
-	char	*s;
 	int		fd;
+	char	*s;
 
 	i = 0;
-	fd = open_map(map);
+	fd = open_map(map->path);
 	s = get_next_line(fd);
-	width = 0;
+	map->width = 0;
 	if (!s)
-		return (0);
+		return ;
 	while (s[i])
 	{
 		if (s[i] != ' ' && s[i] != '\n'
 			&& (!s[i + 1] || s[i + 1] == '\n' || s[i + 1] == ' '))
-			width++;
+			map->width++;
 		i++;
 	}
+	map->height = 0;
 	while (s)
 	{
+		map->height++;
 		free(s);
 		s = get_next_line(fd);
 	}
 	close(fd);
-	return (width);
 }
 
-int	get_height(char *map)
+int	***create_matrix(t_map *map)
 {
-	int		height;
-	int		fd;
-	char	*line;
-
-	fd = open_map(map);
-	line = get_next_line(fd);
-	height = 1;
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		height++;
-	}
-	close(fd);
-	return (height);
-}
-
-int	***create_matrix(char *map)
-{
-	int		height;
-	int		width;
-	int		***tab;
 	int		i;
 	int		j;
 
-	height = get_height(map);
-	width = get_width(map);
-	tab = malloc(height * sizeof (int **));
-	if (!tab)
+	map->tab = malloc(map->height * sizeof (int **));
+	if (!map->tab)
 		exit_handler("Malloc failure.\n");
 	i = 0;
-	while (i < height)
+	while (i < map->height)
 	{
-		tab[i] = malloc(width * sizeof (int *));
-		if (!tab[i])
+		map->tab[i] = malloc(map->width * sizeof (int *));
+		if (!map->tab[i])
 		{
-			free_tab_int(tab, i);
+			free_tab_int(map->tab, i);
 			exit_handler("Malloc failure.\n");
 		}
 		j = 0;
-		while (j < width)
+		while (j < map->width)
 		{
-            tab[i][j] = malloc(2 * sizeof (int ));
+			map->tab[i][j] = malloc(2 * sizeof (int ));
            // if (!tab[i][j]) {
            //    free_tab_int(tab, i); // You'll need a function to free partially allocated tab[i][j]
            //     exit_handler("Malloc failure.\n");
@@ -96,7 +70,7 @@ int	***create_matrix(char *map)
         }
 		i++;
 	}
-	return (tab);
+	return (map->tab);
 }
 
 static unsigned int	get_color(char *s)
@@ -112,38 +86,39 @@ static unsigned int	get_color(char *s)
 		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
 }
 
-int	***fill_tab(char *map, int fd)
+static void	handle_split_failure(char *s, t_map *map, int i)
 {
-	int		***tab;
-	int		h;
+	free(s);
+	free_tab_int(map->tab, i);
+	close(map->fd);
+	exit_handler("Malloc failure.\n");
+}
+
+int	***fill_tab(t_map *map)
+{
 	int		i;
 	int		j;
 	char	*line;
 	char	**nums;
 
-	tab = create_matrix(map);
-	h = get_height(map);
+	map->tab = create_matrix(map);
 	i = 0;
-	while (i < h)
+	while (i < map->height)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(map->fd);
 		nums = ft_split(line, ' ');
 		if (!nums)
-		{
-			free(line);
-			free_tab_int(tab, i);
-			exit_handler("Malloc failure.\n");
-		}
+			handle_split_failure(line, map, i);
 		j = 0;
 		while (nums[j + 1])
 		{
-			tab[i][j][0] = ft_atoi(nums[j]);
-			tab[i][j][1] = get_color(nums[j]);
+			map->tab[i][j][0] = ft_atoi(nums[j]);
+			map->tab[i][j][1] = get_color(nums[j]);
 			j++;
 		}
 		free(line);
 		free_tab_char(nums);
 		i++;
 	}
-	return (tab);
+	return (map->tab);
 }
