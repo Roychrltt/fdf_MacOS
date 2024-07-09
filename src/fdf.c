@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 10:41:23 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 13:08:04 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	count_word(char const *s, char c)
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] != c && s[i] != '\n' && (s[i + 1] == c || !s[i + 1]))
+		if (s[i] != c && s[i] != '\n'
+			&& (s[i + 1] == c || !s[i + 1] || s[i + 1] == '\n'))
 			count++;
 		i++;
 	}
@@ -65,12 +66,12 @@ int key_press(int keycode, t_vars *vars)
 	return(0);
 }
 
-void	isometric(t_vars *var, int *x, int *y, int z)
+void	isometric(t_vars vars, int *x, int *y, int z)
 {
 	int	prev_x;
 	int	prev_y;
 
-	if (!var->iso)
+	if (!vars.iso)
 		return ;
 	prev_x = *x;
 	prev_y = *y;
@@ -78,14 +79,48 @@ void	isometric(t_vars *var, int *x, int *y, int z)
 	*y = -z + (prev_x + prev_y) * sin(0.523599);
 }
 
+void	map_to_points(t_vars vars, t_point *points, int ***tab)
+{
+	int		i;
+	int		j;
+	int		index;
+
+	i = 0;
+	index = 0;
+	while (i < HEIGHT)
+	{
+		j = 0;
+		while (j < WIDTH)
+		{
+			points[index].x = j;
+			points[index].y = i;
+			points[index].z = tab[i][j][0];
+			points[index].color = tab[i][j][1];
+			j++;
+			index++;
+		}
+		i++;
+	}
+	i = 0;
+	index = 0;
+	while (i < HEIGHT)
+	{
+		j = 0;
+		while (j < WIDTH)
+		{
+			isometric(vars, &points[index].x, &points[index].y, points[index].z);
+			j++;
+			index++;
+		}
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	t_point	*points;
 	t_img	img;
-	int		i;
-	int		j;
-	int		a;
 	int		fd;
 	int		***tab;
 
@@ -97,47 +132,27 @@ int	main(int argc, char **argv)
 	points = malloc(WIDTH * HEIGHT * sizeof (t_point));
 	if (!points)
 		exit_handler("Malloc failure.\n");
-	i = 0;
-	a = 0;
 	fd = open_map(argv[1]);
-	tab = fill_tab(argv[i], fd);
+	tab = fill_tab(argv[1], fd);
 	close(fd);
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			printf("%d %d\n", tab[i][j][0], tab[i][j][1]);
+		}
+		printf("Line finished\n");
+	}
 	//error free by far, 3d tab created with position and color
-	while (i < HEIGHT)
-	{
-		j = 0;
-		while (j < WIDTH)
-		{
-			points[a].x = j;
-			points[a].y = i;
-			points[a].z = tab[i][j][0];
-			j++;
-			a++;
-		}
-		i++;
-	}
-	i = 0;
-	a = 0;
-	while (i < HEIGHT)
-	{
-		j = 0;
-		while (j < WIDTH)
-		{
-			isometric(&vars, &points[a].x, &points[a].y, points[a].z);
-			j++;
-			a++;
-		}
-		i++;
-	}
+	printf("so far ok.\n");
+	map_to_points(vars, points, tab);
+	printf("map to points ok.\n");
 	img.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 	draw_background(&img);
-	i = 0;
-	while (i < WIDTH * HEIGHT)
-	{
-		put_pixel(&img, points[i].x, points[i].y, 0xF3F3F3);
-		i++;
-	}
+	int i = -1;
+	while (++i < WIDTH * HEIGHT)
+		put_pixel(&img, points[i]);
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	draw_instructions(vars);
 	mlx_hook(vars.win, 2, 1L<<0, key_press, &vars);

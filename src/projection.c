@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:05:19 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/07 15:41:14 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 13:04:10 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,3 @@ static void	rotate_z(int *x, int *y, double angle)
 	*x = xx * cos(angle) - *y * sin(angle);
 	*y = xx * sin(angle) + *y * cos(angle);
 }
-
-t_point

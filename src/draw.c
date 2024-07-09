@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 22:37:21 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 11:03:51 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ void	draw_instructions(t_vars var)
 	mlx_string_put(mlx, win, 15, y += 30, WHITE, "Reset: R");
 }
 
-void	put_pixel(t_img *img, int x, int y, int color)
+void	put_pixel(t_img *img, t_point point)
 {
 	char	*pxl;
+	int		x;
+	int		y;
+	int		color;
 
+	x = point.x;
+	y = point.y;
+	color = point.color;
 	if (x >= 0 && x <= WIDTH && y >= 0 && y <= HEIGHT)
 	{
 		pxl = img->addr + (y * img->line_len + x * (img->bpp / 8));
@@ -76,8 +82,9 @@ void	put_pixel(t_img *img, int x, int y, int color)
 */
 void	draw_background(t_img *img)
 {
-	int	height;
-	int	width;
+	int		height;
+	int		width;
+	t_point	point;
 
 	height = 0;
 	width = 0;
@@ -86,7 +93,10 @@ void	draw_background(t_img *img)
 		width = 0;
 		while (width < WIDTH)
 		{
-			put_pixel(img, width, height, 0x1b1b1b);
+			point.x = width;
+			point.y = height;
+			point.color = 0x1b1b1b;
+			put_pixel(img, point);
 			width++;
 		}
 		height++;

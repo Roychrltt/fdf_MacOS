@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/08 22:52:32 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 10:59:21 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	draw_background(t_img *img);
 
 // free
 void	free_tab_int(int ***tab, int i);
-void	put_pixel(t_img *img, int x, int y, int color);
+void	put_pixel(t_img *img, t_point point);
 void	draw_line(t_map *map, t_point point0, t_point point1);
 void	free_tab_char(char **tab);
 

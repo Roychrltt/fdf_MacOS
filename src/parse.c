@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 10:33:53 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 13:03:54 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int	get_width(char *map)
 	s = get_next_line(fd);
 	width = 0;
 	if (!s)
-		return (width);
+		return (0);
 	while (s[i])
 	{
-		if (s[i] != ' '  && s[i] != '\n' && (s[i + 1] == ' ' || !s[i + 1]))
+		if (s[i] != ' ' && s[i] != '\n'
+			&& (!s[i + 1] || s[i + 1] == '\n' || s[i + 1] == ' '))
 			width++;
 		i++;
 	}
@@ -67,6 +68,7 @@ int	***create_matrix(char *map)
 	int		width;
 	int		***tab;
 	int		i;
+	int		j;
 
 	height = get_height(map);
 	width = get_width(map);
@@ -76,12 +78,22 @@ int	***create_matrix(char *map)
 	i = 0;
 	while (i < height)
 	{
-		tab[i] = malloc(width * sizeof (int [2]));
+		tab[i] = malloc(width * sizeof (int *));
 		if (!tab[i])
 		{
 			free_tab_int(tab, i);
 			exit_handler("Malloc failure.\n");
 		}
+		j = 0;
+		while (j < width)
+		{
+            tab[i][j] = malloc(2 * sizeof (int ));
+           // if (!tab[i][j]) {
+           //    free_tab_int(tab, i); // You'll need a function to free partially allocated tab[i][j]
+           //     exit_handler("Malloc failure.\n");
+           //}
+            j++;
+        }
 		i++;
 	}
 	return (tab);
@@ -103,19 +115,27 @@ static unsigned int	get_color(char *s)
 int	***fill_tab(char *map, int fd)
 {
 	int		***tab;
+	int		h;
 	int		i;
 	int		j;
 	char	*line;
 	char	**nums;
 
 	tab = create_matrix(map);
+	h = get_height(map);
 	i = 0;
-	while (tab[i])
+	while (i < h)
 	{
 		line = get_next_line(fd);
 		nums = ft_split(line, ' ');
+		if (!nums)
+		{
+			free(line);
+			free_tab_int(tab, i);
+			exit_handler("Malloc failure.\n");
+		}
 		j = 0;
-		while (tab[i][j])
+		while (nums[j + 1])
 		{
 			tab[i][j][0] = ft_atoi(nums[j]);
 			tab[i][j][1] = get_color(nums[j]);
