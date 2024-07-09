@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 21:08:43 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 21:13:21 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,6 @@ static unsigned int	get_color(char *s)
 		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
 }
 
-static void	handle_split_failure(char *s, t_map *map, int i)
-{
-	free(s);
-	free_tab_int(map->tab, i);
-	close(map->fd);
-	exit_handler("Malloc failure.\n");
-}
-
 int	***fill_tab(t_map *map)
 {
 	int		i;
@@ -121,4 +113,33 @@ int	***fill_tab(t_map *map)
 		i++;
 	}
 	return (map->tab);
+}
+
+void	check_init_map(t_map *map)
+{
+	int		cur;
+	char	*line;
+
+	get_map_size(map);
+	map->fd = open_map(map->path);
+	line = get_next_line(map->fd);
+	if (!line)
+		exit_handler("Empty map!\n");
+	while (line)
+	{
+		free(line);
+		line = get_next_line(map->fd);
+		if (!line)
+			break ;
+		cur = count_word(line, ' ');
+		if (cur != map->width)
+		{
+			free(line);
+			exit_handler("Invalid map!\n");
+		}
+	}
+	close(map->fd);
+	map->fd = open_map(map->path);
+	map->tab = fill_tab(map);
+	close(map->fd);
 }

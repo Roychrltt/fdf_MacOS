@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 14:20:54 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 21:49:11 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	draw_line(t_map *map, t_point point0, t_point point1)
 	}
 }
 */
+
 void	draw_background(t_img *img)
 {
 	int		height;

@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 21:07:25 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/09 22:14:12 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
+	t_img	*img;
 	int		iso;
 }	t_vars;
 
@@ -64,6 +65,7 @@ typedef struct s_vars
 void	get_map_size(t_map *map);
 int		***create_matrix(t_map *map);
 int		***fill_tab(t_map *map);
+void	check_init_map(t_map *map);
 
 // draw
 void	put_pixel(t_img *img, t_point point);
@@ -74,10 +76,13 @@ void	draw_image(t_img *img, t_map map, t_point *points);
 
 // free
 void	free_tab_int(int ***tab, int i);
+void	free_map_tab(int ***tab, int h, int w);
 void	free_tab_char(char **tab);
+void	handle_split_failure(char *s, t_map *map, int i);
 
 // utils
 void	exit_handler(char *s);
 int		open_map(char *map);
+int		count_word(char const *s, char c);
 
 #endif
