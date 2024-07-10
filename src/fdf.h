@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 23:31:59 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 02:04:59 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ typedef struct s_vars
 // parse
 void	get_map_size(t_map *map);
 void	create_matrix(t_map *map);
-int		***fill_tab(t_map *map);
+void	fill_tab(t_map *map);
 void	check_init_map(t_map *map);
 
 // draw
 void	put_pixel(t_img *img, t_point point);
-void	draw_line(t_map *map, t_point point0, t_point point1);
+void	draw_line(t_img *img, t_point point1, t_point point2);
 void	draw_instructions(t_vars *vars);
 void	draw_background(t_img *img);
 void	draw_image(t_vars *vars, t_map map, t_point *points);

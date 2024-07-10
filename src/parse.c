@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 23:06:23 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 02:14:48 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ static unsigned int	get_color(char *s)
 	while (s[i] && s[i] != ',')
 		i++;
 	if (!s[i])
-		return (0xF3F3F3);
+		return (0x484848);
 	else
 		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
 }
 
-int	***fill_tab(t_map *map)
+void	fill_tab(t_map *map)
 {
 	int		i;
 	int		j;
@@ -88,25 +88,24 @@ int	***fill_tab(t_map *map)
 	char	**nums;
 
 	create_matrix(map);
-	i = 0;
-	while (i < map->height)
+	i = -1;
+	while (++i < map->height)
 	{
 		line = get_next_line(map->fd);
 		nums = ft_split(line, ' ');
 		if (!nums)
 			handle_split_failure(line, map, i);
-		j = 0;
-		while (nums[j + 1])
+		j = -1;
+		while (nums[++j])
 		{
+			if (nums[j][0] == '\n')
+				break;
 			map->tab[i][j][0] = ft_atoi(nums[j]);
 			map->tab[i][j][1] = get_color(nums[j]);
-			j++;
 		}
 		free(line);
 		free_tab_char(nums);
-		i++;
 	}
-	return (map->tab);
 }
 
 void	check_init_map(t_map *map)
@@ -134,6 +133,6 @@ void	check_init_map(t_map *map)
 	}
 	close(map->fd);
 	map->fd = open_map(map->path);
-	map->tab = fill_tab(map);
+	fill_tab(map);
 	close(map->fd);
 }

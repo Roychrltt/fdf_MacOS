@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 23:32:47 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 02:23:06 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 int	key_press(int keycode, t_vars *vars)
 {
 	if (keycode == 53)
+	{
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
-	return(0);
+	}
+	return (0);
 }
 
 void	isometric(t_vars vars, int *x, int *y, int z)
@@ -29,8 +31,8 @@ void	isometric(t_vars vars, int *x, int *y, int z)
 		return ;
 	prev_x = *x;
 	prev_y = *y;
-	*x = (prev_x - prev_y) * cos(0.523599);
-	*y = -z + (prev_x + prev_y) * sin(0.523599);
+	*x = ((prev_x - prev_y) * cos(0.523599)) * 20 + WIDTH / 2;
+	*y = (-z + (prev_x + prev_y) * sin(0.523599)) * 20 + HEIGHT / 4;
 }
 
 void	map_to_points(t_vars vars, t_point *points, t_map map)
@@ -50,7 +52,8 @@ void	map_to_points(t_vars vars, t_point *points, t_map map)
 			points[index].y = i;
 			points[index].z = map.tab[i][j][0];
 			points[index].color = map.tab[i][j][1];
-			isometric(vars, &points[index].x, &points[index].y, points[index].z);
+			isometric(vars, &points[index].x, &points[index].y,
+				points[index].z);
 			j++;
 			index++;
 		}
@@ -89,9 +92,8 @@ int	main(int argc, char **argv)
 		exit_handler("Malloc failure.\n");
 	map_to_points(vars, points, map);
 	draw_image(&vars, map, points);
-	mlx_hook(vars.win, 2, 1L<<0, key_press, &vars);
-	//mlx_hook(vars.win, 4, 1L<<2, , close_window, &vars);
-	mlx_loop(vars.mlx);
 	free(points);
 	free_map_tab(map.tab, map.height, map.width);
+	mlx_hook(vars.win, 2, 0, key_press, &vars);
+	mlx_loop(vars.mlx);
 }

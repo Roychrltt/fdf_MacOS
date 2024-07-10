@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 23:32:11 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 02:08:12 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ void	draw_instructions(t_vars *vars)
 	mlx = vars->mlx;
 	win = vars->win;
 	y = 0;
-	mlx_string_put(mlx, win, 15, y += 15, WHITE, "Controls:");
-	mlx_string_put(mlx, win, 15, y += 40, WHITE, "Move: W, A, S, D, Arrows");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Zoom: Middle Wheel");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "Flatten: + / -");
-	mlx_string_put(mlx, win, 15, y += 30, WHITE, "Rotate:");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  x (+ / -): U / J");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  y (+ / -): I / K");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "  z (+ / -): O / L");
-	mlx_string_put(mlx, win, 15, y += 30, WHITE, "Toggle Perspective: P");
-	mlx_string_put(mlx, win, 15, y += 20, WHITE, "(Isometric and Parallel)");
-	mlx_string_put(mlx, win, 15, y += 30, WHITE, "Reset: R");
+	mlx_string_put(mlx, win, 15, y += 15, 0x3A3A3A, "Controls:");
+	mlx_string_put(mlx, win, 15, y += 40, 0x3A3A3A, "Move: W, A, S, D, Arrows");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "Zoom: Middle Wheel");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "Flatten: + / -");
+	mlx_string_put(mlx, win, 15, y += 30, 0x3A3A3A, "Rotate:");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "  x (+ / -): U / J");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "  y (+ / -): I / K");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "  z (+ / -): O / L");
+	mlx_string_put(mlx, win, 15, y += 30, 0x3A3A3A, "Toggle Perspective: P");
+	mlx_string_put(mlx, win, 15, y += 20, 0x3A3A3A, "(Isometric and Parallel)");
+	mlx_string_put(mlx, win, 15, y += 30, 0x3A3A3A, "Reset: R");
 }
 
 void	put_pixel(t_img *img, t_point point)
@@ -50,36 +50,33 @@ void	put_pixel(t_img *img, t_point point)
 		*(unsigned int *)pxl = color;
 	}
 }
-/*
-void	draw_line(t_map *map, t_point point0, t_point point1)
-{
-	float	step;
-	float	x;
-	float	y;
-	int		i;
-	t_delta	delta;
 
-	i = 0;
-	delta.dx = point1.x - point0.x;
-	delta.dy = point1.y - point0.y;
-	if (abs(delta.dx) >= abs(delta.dy))
-		step = fabsf(delta.dx);
+void	draw_line(t_img *img, t_point point1, t_point point2)
+{
+	float		dx;
+	float		dy;
+	int		step;
+	int		i;
+	t_point	point;
+
+	dx = point2.x - point1.x;
+	dy = point2.y - point1.y;
+	if (fabsf(dx) >= fabsf(dy))
+		step = fabsf(dx);
 	else
-		step = fabsf(delta.dy);
-	delta.dx = delta.dx / step;
-	delta.dy = delta.dy / step;
-	x = point0.x;
-	y = point0.y;
-	while (i < step)
+		step = fabsf(dy);
+	dx /= step;
+	dy /= step;
+	i = 0;
+	while (i <= step)
 	{
-		put_pixel(env, -x + WINDOW_WIDTH / 2 + env->translation, \
-				-y + HEIGHT / 2 + env->translation, 0xFFFFFF);
-		x = x + delta.dx;
-		y = y + delta.dy;
+		point.x = point1.x + dx * i;
+		point.y = point1.y + dy * i;
+		point.color = point1.color;
+		put_pixel(img, point);
 		i++;
 	}
 }
-*/
 
 void	draw_background(t_img *img)
 {
@@ -96,7 +93,7 @@ void	draw_background(t_img *img)
 		{
 			point.x = width;
 			point.y = height;
-			point.color = 0x1b1b1b;
+			point.color = 0xFFF1DA;
 			put_pixel(img, point);
 			width++;
 		}
@@ -111,7 +108,13 @@ void	draw_image(t_vars *vars, t_map map, t_point *points)
 	i = 0;
 	draw_background(vars->img);
 	while (i < map.width * map.height)
-		put_pixel(vars->img, points[i++]);
+	{
+		if ((i + 1) % map.width)
+			draw_line(vars->img, points[i], points[i + 1]);
+		if (i < map.height * map.width - map.width)
+			draw_line(vars->img, points[i], points[i + map.width]);
+		i++;
+	}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img->img, 0, 0);
 	draw_instructions(vars);
 }
