@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 19:28:25 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 20:14:13 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
+# define KEY_PLUS 24
+# define KEY_MINUS 27
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_R 15
+# define KEY_P 35
 
 typedef struct s_point
 {

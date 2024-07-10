@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 19:34:09 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 20:19:04 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@ void	isometric(t_vars vars, int *x, int *y, int z)
 	int	prev_x;
 	int	prev_y;
 
-	if (!vars.iso)
-		return ;
 	prev_x = *x;
 	prev_y = *y;
+	if (!vars.iso)
+	{
+		*x = prev_x * vars.scale + vars.shift_x;
+		*y = prev_y * vars.scale + vars.shift_y;
+		return ;
+	}
 	*x = ((prev_x - prev_y) * cos(vars.angle)) * vars.scale + vars.shift_x;
 	*y = (-z * vars.flatten + (prev_x + prev_y) * sin(vars.angle))
 		* vars.scale + vars.shift_y;
-	printf("x : %d\n", *x);
-	printf("y : %d\n", *y);
 }
 
 void	map_to_points(t_vars vars, t_point *points)
@@ -62,7 +64,7 @@ void	init_my_vars(t_vars *vars)
 	vars->addr = mlx_get_data_addr(vars->img, &vars->bpp, &vars->line_len,
 			&vars->endian);
 	vars->iso = 1;
-	vars->flatten = 0.25;
+	vars->flatten = 1;
 	vars->angle = 0.523599;
 	vars->scale = 10;
 	vars->shift_x = WIDTH / 2;

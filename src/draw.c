@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 19:23:00 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 19:58:08 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,5 @@ void	draw_image(t_vars *vars)
 	}
 	free(points);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
-	write (2, "OK\n", 3);
 	draw_instructions(vars);
 }
