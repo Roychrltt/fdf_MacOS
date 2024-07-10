@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 18:42:52 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 19:34:09 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ void	isometric(t_vars vars, int *x, int *y, int z)
 		return ;
 	prev_x = *x;
 	prev_y = *y;
-	*x = ((prev_x - prev_y) * cos(vars.angle)) * vars.scale + WIDTH / 2;
+	*x = ((prev_x - prev_y) * cos(vars.angle)) * vars.scale + vars.shift_x;
 	*y = (-z * vars.flatten + (prev_x + prev_y) * sin(vars.angle))
-		* vars.scale + HEIGHT / 4;
+		* vars.scale + vars.shift_y;
+	printf("x : %d\n", *x);
+	printf("y : %d\n", *y);
 }
 
 void	map_to_points(t_vars vars, t_point *points)
@@ -63,6 +65,8 @@ void	init_my_vars(t_vars *vars)
 	vars->flatten = 0.25;
 	vars->angle = 0.523599;
 	vars->scale = 10;
+	vars->shift_x = WIDTH / 2;
+	vars->shift_y = HEIGHT / 4;
 }
 
 int	main(int argc, char **argv)
@@ -74,9 +78,9 @@ int	main(int argc, char **argv)
 	vars.path = argv[1];
 	check_init_map(&vars);
 	init_my_vars(&vars);
-	draw_image(&vars);
 	mlx_hook(vars.win, 2, 1L << 0, key_press, &vars);
 	mlx_hook(vars.win, 17, 1L << 17, key_press, &vars);
+	draw_image(&vars);
 	mlx_loop(vars.mlx);
 	free_map_tab(vars.tab, vars.height, vars.width);
 }

@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 18:42:10 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 19:28:25 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@
 
 # define WIDTH 1200
 # define HEIGHT 700
+# define SHIFT 10
 
 # define KEY_ESC 53
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
 
 typedef struct s_point
 {
@@ -51,6 +56,8 @@ typedef struct s_vars
 	int		height;
 	int		width;
 	int		***tab;
+	int		shift_x;
+	int		shift_y;
 }	t_vars;
 
 // parse
@@ -58,6 +65,7 @@ void	get_map_size(t_vars *vars);
 void	create_matrix(t_vars *vars);
 void	fill_tab(t_vars *vars);
 void	check_init_map(t_vars *vars);
+void	isometric(t_vars vars, int *x, int *y, int z);
 void	map_to_points(t_vars vars, t_point *points);
 
 // draw
