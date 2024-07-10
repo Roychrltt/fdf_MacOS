@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 02:04:59 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 18:42:10 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 
 # define KEY_ESC 53
 
-# define WHITE 0xFFFFFF
-
 typedef struct s_point
 {
 	int	x;
@@ -35,51 +33,49 @@ typedef struct s_point
 	int	color;
 }	t_point;
 
-typedef struct s_map
+typedef struct s_vars
 {
-	char	*path;
-	int		fd;
-	int		height;
-	int		width;
-	int		***tab;
-}				t_map;
-
-typedef struct s_img
-{
+	void	*mlx;
+	void	*win;
+	int		iso;
+	float	flatten;
+	float	angle;
+	int		scale;
 	void	*img;
 	char	*addr;
 	int		bpp;
 	int		line_len;
 	int		endian;
-}	t_img;
-
-typedef struct s_vars
-{
-	void	*mlx;
-	void	*win;
-	t_img	*img;
-	int		iso;
+	char	*path;
+	int		fd;
+	int		height;
+	int		width;
+	int		***tab;
 }	t_vars;
 
 // parse
-void	get_map_size(t_map *map);
-void	create_matrix(t_map *map);
-void	fill_tab(t_map *map);
-void	check_init_map(t_map *map);
+void	get_map_size(t_vars *vars);
+void	create_matrix(t_vars *vars);
+void	fill_tab(t_vars *vars);
+void	check_init_map(t_vars *vars);
+void	map_to_points(t_vars vars, t_point *points);
 
 // draw
-void	put_pixel(t_img *img, t_point point);
-void	draw_line(t_img *img, t_point point1, t_point point2);
+void	put_pixel(t_vars *vars, t_point point);
+void	draw_line(t_vars *vars, t_point point1, t_point point2);
 void	draw_instructions(t_vars *vars);
-void	draw_background(t_img *img);
-void	draw_image(t_vars *vars, t_map map, t_point *points);
+void	draw_background(t_vars *vars);
+void	draw_image(t_vars *vars);
+
+// event
+int		key_press(int keycode, t_vars *vars);
 
 // free
 void	free_tab_int(int ***tab, int i);
 void	free_tab_int2(int ***tab, int i, int j, int w);
 void	free_map_tab(int ***tab, int h, int w);
 void	free_tab_char(char **tab);
-void	handle_split_failure(char *s, t_map *map, int i);
+void	handle_split_failure(char *s, t_vars *vars, int i);
 
 // utils
 void	exit_handler(char *s);

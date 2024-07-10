@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 16:54:56 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 23:06:43 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 12:04:22 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	free_tab_char(char **tab)
 	free(tab);
 }
 
-void	handle_split_failure(char *s, t_map *map, int i)
+void	handle_split_failure(char *s, t_vars *vars, int i)
 {
 	free(s);
-	free_tab_int(map->tab, i);
-	close(map->fd);
+	free_tab_int(vars->tab, i);
+	close(vars->fd);
 	exit_handler("Malloc failure.\n");
 }

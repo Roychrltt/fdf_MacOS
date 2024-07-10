@@ -6,61 +6,61 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 20:57:40 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 02:14:48 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 12:54:23 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	get_map_size(t_map *map)
+void	get_map_size(t_vars *vars)
 {
 	size_t	i;
 	int		fd;
 	char	*s;
 
 	i = 0;
-	fd = open_map(map->path);
+	fd = open_map(vars->path);
 	s = get_next_line(fd);
-	map->width = 0;
+	vars->width = 0;
 	if (!s)
 		return ;
 	while (s[i])
 	{
 		if (s[i] != ' ' && s[i] != '\n'
 			&& (!s[i + 1] || s[i + 1] == '\n' || s[i + 1] == ' '))
-			map->width++;
+			vars->width++;
 		i++;
 	}
-	map->height = 0;
+	vars->height = 0;
 	while (s)
 	{
-		map->height++;
+		vars->height++;
 		free(s);
 		s = get_next_line(fd);
 	}
 	close(fd);
 }
 
-void	create_matrix(t_map *map)
+void	create_matrix(t_vars *vars)
 {
 	int		i;
 	int		j;
 
-	map->tab = malloc(map->height * sizeof (int **));
-	if (!map->tab)
+	vars->tab = malloc(vars->height * sizeof (int **));
+	if (!vars->tab)
 		exit_handler("Malloc failure.\n");
 	i = 0;
-	while (i < map->height)
+	while (i < vars->height)
 	{
-		map->tab[i] = malloc(map->width * sizeof (int *));
-		if (!map->tab[i])
-			free_tab_int(map->tab, i);
+		vars->tab[i] = malloc(vars->width * sizeof (int *));
+		if (!vars->tab[i])
+			free_tab_int(vars->tab, i);
 		j = 0;
-		while (j < map->width)
+		while (j < vars->width)
 		{
-			map->tab[i][j] = malloc(2 * sizeof (int ));
-			if (!map->tab[i][j])
-				free_tab_int2(map->tab, i, j, map->width);
+			vars->tab[i][j] = malloc(2 * sizeof (int ));
+			if (!vars->tab[i][j])
+				free_tab_int2(vars->tab, i, j, vars->width);
 			j++;
 		}
 		i++;
@@ -80,59 +80,59 @@ static unsigned int	get_color(char *s)
 		return (ft_atoi_base(s + i + 1, "0123456789ABCDEF"));
 }
 
-void	fill_tab(t_map *map)
+void	fill_tab(t_vars *vars)
 {
 	int		i;
 	int		j;
 	char	*line;
 	char	**nums;
 
-	create_matrix(map);
+	create_matrix(vars);
 	i = -1;
-	while (++i < map->height)
+	while (++i < vars->height)
 	{
-		line = get_next_line(map->fd);
+		line = get_next_line(vars->fd);
 		nums = ft_split(line, ' ');
 		if (!nums)
-			handle_split_failure(line, map, i);
+			handle_split_failure(line, vars, i);
 		j = -1;
 		while (nums[++j])
 		{
 			if (nums[j][0] == '\n')
-				break;
-			map->tab[i][j][0] = ft_atoi(nums[j]);
-			map->tab[i][j][1] = get_color(nums[j]);
+				break ;
+			vars->tab[i][j][0] = ft_atoi(nums[j]);
+			vars->tab[i][j][1] = get_color(nums[j]);
 		}
 		free(line);
 		free_tab_char(nums);
 	}
 }
 
-void	check_init_map(t_map *map)
+void	check_init_map(t_vars *vars)
 {
 	int		cur;
 	char	*line;
 
-	get_map_size(map);
-	map->fd = open_map(map->path);
-	line = get_next_line(map->fd);
+	get_map_size(vars);
+	vars->fd = open_map(vars->path);
+	line = get_next_line(vars->fd);
 	if (!line)
 		exit_handler("Empty map!\n");
 	while (line)
 	{
 		free(line);
-		line = get_next_line(map->fd);
+		line = get_next_line(vars->fd);
 		if (!line)
 			break ;
 		cur = count_word(line, ' ');
-		if (cur != map->width)
+		if (cur != vars->width)
 		{
 			free(line);
 			exit_handler("Invalid map!\n");
 		}
 	}
-	close(map->fd);
-	map->fd = open_map(map->path);
-	fill_tab(map);
-	close(map->fd);
+	close(vars->fd);
+	vars->fd = open_map(vars->path);
+	fill_tab(vars);
+	close(vars->fd);
 }
