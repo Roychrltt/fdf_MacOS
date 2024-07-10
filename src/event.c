@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 18:25:52 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 20:19:39 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 20:31:14 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ static void	reset_image(t_vars *vars)
 static void	handle_move(int keycode, t_vars *vars)
 {
 	if (keycode == KEY_W)
-		vars->shift_y -= SHIFT;
-	if (keycode == KEY_S)
 		vars->shift_y += SHIFT;
+	if (keycode == KEY_S)
+		vars->shift_y -= SHIFT;
 	if (keycode == KEY_A)
-		vars->shift_x -= SHIFT;
-	if (keycode == KEY_D)
 		vars->shift_x += SHIFT;
+	if (keycode == KEY_D)
+		vars->shift_x -= SHIFT;
 	if (keycode == KEY_PLUS)
 		vars->scale++;
 	if (keycode == KEY_MINUS)

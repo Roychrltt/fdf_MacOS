@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 20:19:04 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/10 20:30:12 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,3 @@ int	main(int argc, char **argv)
 	mlx_loop(vars.mlx);
 	free_map_tab(vars.tab, vars.height, vars.width);
 }
-/*
-for (int i = 0; i < vars.height; i++)
-	{
-		for (int j = 0; j < vars.width; j++)
-		{
-			printf("%d, %u/ ", vars.tab[i][j][0], vars.tab[i][j][1]);
-		}
-		printf("\n");
-	}
-*/
