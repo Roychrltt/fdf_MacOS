@@ -6,57 +6,13 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 20:03:25 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 20:30:12 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/11 10:37:36 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	isometric(t_vars vars, int *x, int *y, int z)
-{
-	int	prev_x;
-	int	prev_y;
-
-	prev_x = *x;
-	prev_y = *y;
-	if (!vars.iso)
-	{
-		*x = prev_x * vars.scale + vars.shift_x;
-		*y = prev_y * vars.scale + vars.shift_y;
-		return ;
-	}
-	*x = ((prev_x - prev_y) * cos(vars.angle)) * vars.scale + vars.shift_x;
-	*y = (-z * vars.flatten + (prev_x + prev_y) * sin(vars.angle))
-		* vars.scale + vars.shift_y;
-}
-
-void	map_to_points(t_vars vars, t_point *points)
-{
-	int		i;
-	int		j;
-	int		index;
-
-	i = 0;
-	index = 0;
-	while (i < vars.height)
-	{
-		j = 0;
-		while (j < vars.width)
-		{
-			points[index].x = j;
-			points[index].y = i;
-			points[index].z = vars.tab[i][j][0];
-			points[index].color = vars.tab[i][j][1];
-			isometric(vars, &points[index].x, &points[index].y,
-				points[index].z);
-			j++;
-			index++;
-		}
-		i++;
-	}
-}
-
-void	init_my_vars(t_vars *vars)
+static void	init_my_vars(t_vars *vars)
 {
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, WIDTH, HEIGHT, "FdF");
@@ -71,6 +27,17 @@ void	init_my_vars(t_vars *vars)
 	vars->shift_y = HEIGHT / 4;
 }
 
+static void	check_is_fdf(char *path)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+		i++;
+	if (ft_strncmp(path + i - 4, ".fdf", 5) != 0)
+		exit_handler("Wrong map type!\n");
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
@@ -78,10 +45,11 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		exit_handler("Usage: $>./fdf /maps/map.fdf\n");
 	vars.path = argv[1];
+	check_is_fdf(argv[1]);
 	check_init_map(&vars);
 	init_my_vars(&vars);
 	mlx_hook(vars.win, 2, 1L << 0, key_press, &vars);
-	mlx_hook(vars.win, 17, 1L << 17, key_press, &vars);
+	mlx_hook(vars.win, 17, 1L << 17, close_window, &vars);
 	draw_image(&vars);
 	mlx_loop(vars.mlx);
 	free_map_tab(vars.tab, vars.height, vars.width);

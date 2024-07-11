@@ -6,25 +6,27 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 18:25:52 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 20:31:14 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/11 10:39:43 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	update_image(t_vars *vars)
+static void	update_image(t_vars *vars)
 {
 	draw_image(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	draw_instructions(vars);
 }
 
-static void	close_window(t_vars *vars)
+int	close_window(t_vars *vars)
 {
 	mlx_destroy_image(vars->mlx, vars->img);
 	mlx_destroy_window(vars->mlx, vars->win);
 	free(vars->mlx);
+	free_map_tab(vars->tab, vars->height, vars->width);
 	exit(EXIT_SUCCESS);
+	return (0);
 }
 
 static void	reset_image(t_vars *vars)

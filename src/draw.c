@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/10 19:58:08 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/11 10:33:47 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	draw_instructions(t_vars *vars)
 	mlx_string_put(mlx, win, 15, y += 30, 0x3A3A3A, "Reset: R");
 }
 
-void	put_pixel(t_vars *vars, t_point point)
+static void	put_pixel(t_vars *vars, t_point point)
 {
 	char	*pxl;
 	int		x;
@@ -51,7 +51,7 @@ void	put_pixel(t_vars *vars, t_point point)
 	}
 }
 
-void	draw_line(t_vars *vars, t_point point1, t_point point2)
+static void	draw_line(t_vars *vars, t_point point1, t_point point2)
 {
 	float	dx;
 	float	dy;
@@ -78,7 +78,7 @@ void	draw_line(t_vars *vars, t_point point1, t_point point2)
 	}
 }
 
-void	draw_background(t_vars *vars)
+static void	draw_background(t_vars *vars)
 {
 	int		height;
 	int		width;

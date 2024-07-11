@@ -2,11 +2,11 @@ NAME = fdf
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 INC = -Isrc/ -Ilibft -Iminilib 
 
-LIB_FLAGS = -Lminilib -lmlx -Llibft -lft -framework OpenGL -framework AppKit
+LIB_FLAGS = -Lminilib -lmlx -Llibft -lft -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 
 MINILIB = minilib/libmlx.a #minilib/libmlx.dylib
 

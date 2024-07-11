@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 17:28:48 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 21:48:47 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/11 10:27:50 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,48 @@ int	count_word(char const *s, char c)
 		i++;
 	}
 	return (count);
+}
+
+void	isometric(t_vars vars, int *x, int *y, int z)
+{
+	int	prev_x;
+	int	prev_y;
+
+	prev_x = *x;
+	prev_y = *y;
+	if (!vars.iso)
+	{
+		*x = prev_x * vars.scale + vars.shift_x;
+		*y = prev_y * vars.scale + vars.shift_y;
+		return ;
+	}
+	*x = ((prev_x - prev_y) * cos(vars.angle)) * vars.scale + vars.shift_x;
+	*y = (-z * vars.flatten + (prev_x + prev_y) * sin(vars.angle))
+		* vars.scale + vars.shift_y;
+}
+
+void	map_to_points(t_vars vars, t_point *points)
+{
+	int		i;
+	int		j;
+	int		index;
+
+	i = 0;
+	index = 0;
+	while (i < vars.height)
+	{
+		j = 0;
+		while (j < vars.width)
+		{
+			points[index].x = j;
+			points[index].y = i;
+			points[index].z = vars.tab[i][j][0];
+			points[index].color = vars.tab[i][j][1];
+			isometric(vars, &points[index].x, &points[index].y,
+				points[index].z);
+			j++;
+			index++;
+		}
+		i++;
+	}
 }
