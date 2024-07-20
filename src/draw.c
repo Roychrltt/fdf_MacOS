@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 19:09:10 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/11 10:33:47 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/20 10:05:47 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void	draw_background(t_vars *vars)
 		{
 			point.x = width;
 			point.y = height;
-			point.color = 0xFFF1DA;
+			point.color = 0xFDF9E5;
 			put_pixel(vars, point);
 			width++;
 		}

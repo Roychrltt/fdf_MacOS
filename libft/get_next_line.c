@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 12:44:17 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 13:00:50 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/06/24 12:56:43 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ char	*get_next_line(int fd)
 	char		*readed;
 	static char	remnant[BUFFER_SIZE + 1];
 
+	if (BUFFER_SIZE < 1 || fd < 0 || read(fd, 0, 0) < 0)
+		return (NULL);
 	cur = malloc(BUFFER_SIZE + 1);
 	if (!cur)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/11 10:39:56 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/20 09:56:55 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@
 # define HEIGHT 700
 # define SHIFT 10
 
+# define KEY_ESC 53
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_PLUS 24
+# define KEY_MINUS 27
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
+# define KEY_UP 126
+# define KEY_DOWN 125
+# define KEY_R 15
+# define KEY_P 35
+/*
 # define KEY_ESC 65307
 # define KEY_W 119
 # define KEY_A 97
@@ -37,7 +51,7 @@
 # define KEY_DOWN 65364
 # define KEY_R 11
 # define KEY_P 112
-
+*/
 typedef struct s_point
 {
 	int	x;

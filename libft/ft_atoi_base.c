@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 16:40:54 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/09 12:32:58 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/07/08 17:11:23 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ unsigned int	ft_atoi_base(const char *str, const char *base)
 	while ((str[i] == ' ' || (str[i] >= 9 && str[i] <= 13)))
 		i++;
 	if (ft_strncmp(str + i, "0x", 2) == 0
-		&& ft_strncmp(base, "0123456789ABCDEF", 16) == 0)
-		i += 2;
+			&& ft_strncmp(base, "0123456789ABCDEF", 16) == 0)
+		str += 2;
 	while (str[i])
 	{
 		if (check_base(ft_toupper(str[i]), base) >= 0)
