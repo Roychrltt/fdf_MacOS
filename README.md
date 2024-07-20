@@ -1,3 +1,5 @@
 # fdf_MacOS
 
-Because I only have a mac at home.
+This is the MacOS version. You should be able to "make" it directly on a Mac.
+
+Beware since the minilib for MacOS and for Linux are different...
