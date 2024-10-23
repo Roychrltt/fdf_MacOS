@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 18:03:12 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/20 09:56:55 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/10/23 10:24:17 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 # define KEY_RIGHT 124
 # define KEY_UP 126
 # define KEY_DOWN 125
+# define KEY_Q 12
+# define KEY_E 14
 # define KEY_R 15
 # define KEY_P 35
 /*
@@ -67,6 +69,7 @@ typedef struct s_vars
 	int		iso;
 	float	flatten;
 	float	angle;
+	float	swirl;
 	int		scale;
 	void	*img;
 	char	*addr;
@@ -80,6 +83,7 @@ typedef struct s_vars
 	int		***tab;
 	int		shift_x;
 	int		shift_y;
+	int		key;
 }	t_vars;
 
 // parse
@@ -107,7 +111,7 @@ void	handle_split_failure(char *s, t_vars *vars, int i);
 void	exit_handler(char *s);
 int		open_map(char *map);
 int		count_word(char const *s, char c);
-void	isometric(t_vars vars, int *x, int *y, int z);
-void	map_to_points(t_vars vars, t_point *points);
+void	isometric(t_vars *vars, int *x, int *y, int z);
+void	map_to_points(t_vars *vars, t_point *points);
 
 #endif

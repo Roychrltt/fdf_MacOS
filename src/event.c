@@ -6,7 +6,7 @@
 /*   By: xiaxu <xiaxu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 18:25:52 by xiaxu             #+#    #+#             */
-/*   Updated: 2024/07/11 10:39:43 by xiaxu            ###   ########.fr       */
+/*   Updated: 2024/10/23 10:24:41 by xiaxu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,37 +34,43 @@ static void	reset_image(t_vars *vars)
 	vars->iso = 1;
 	vars->flatten = 1;
 	vars->angle = 0.523599;
+	vars->swirl = 0.0;
 	vars->scale = 10;
 	vars->shift_x = WIDTH / 2;
-	vars->shift_y = HEIGHT / 4;
+	vars->shift_y = HEIGHT / 2;
 }
 
 static void	handle_move(int keycode, t_vars *vars)
 {
 	if (keycode == KEY_W)
 		vars->shift_y += SHIFT;
-	if (keycode == KEY_S)
+	else if (keycode == KEY_S)
 		vars->shift_y -= SHIFT;
-	if (keycode == KEY_A)
+	else if (keycode == KEY_A)
 		vars->shift_x += SHIFT;
-	if (keycode == KEY_D)
+	else if (keycode == KEY_D)
 		vars->shift_x -= SHIFT;
-	if (keycode == KEY_PLUS)
-		vars->scale++;
-	if (keycode == KEY_MINUS)
-		vars->scale--;
-	if (keycode == KEY_LEFT)
+	else if (keycode == KEY_Q)
+		vars->swirl += 0.1;
+	else if (keycode == KEY_E)
+		vars->swirl -= 0.1;
+	else if (keycode == KEY_PLUS)
+		vars->scale *= 1.5;
+	else if (keycode == KEY_MINUS && vars->scale > 2)
+		vars->scale /= 1.5;
+	else if (keycode == KEY_LEFT)
 		vars->angle -= 0.1;
-	if (keycode == KEY_RIGHT)
+	else if (keycode == KEY_RIGHT)
 		vars->angle += 0.1;
-	if (keycode == KEY_UP)
+	else if (keycode == KEY_UP)
 		vars->flatten *= 1.5;
-	if (keycode == KEY_DOWN)
+	else if (keycode == KEY_DOWN && vars->flatten)
 		vars->flatten /= 1.5;
-	if (keycode == KEY_R)
+	else if (keycode == KEY_R)
 		reset_image(vars);
-	if (keycode == KEY_P)
+	else if (keycode == KEY_P)
 		vars->iso = 0;
+	vars->key = keycode;
 	update_image(vars);
 }
 
@@ -81,7 +87,7 @@ int	key_press(int keycode, t_vars *vars)
 		handle_move(keycode, vars);
 	else if (keycode == KEY_UP || keycode == KEY_DOWN)
 		handle_move(keycode, vars);
-	else if (keycode == KEY_R || keycode == KEY_P)
+	else if (keycode == KEY_R || keycode == KEY_P || keycode == KEY_Q || keycode == KEY_E)
 		handle_move(keycode, vars);
 	return (0);
 }
